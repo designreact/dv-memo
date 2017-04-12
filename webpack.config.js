@@ -50,17 +50,16 @@ module.exports = {
           fallback: 'style-loader',
           use: ['css-loader', 'sass-loader'],
         }),
-        options: {
-          outputStyle: 'compressed',
-        }
       },
       {
         test: /\.(js|jsx)$/,
         exclude: [/node_modules/, /.+\.config.js/, /.+\.spec.js/],
-        use: 'babel-loader',
-        query: {
-          plugins: ['transform-runtime', 'transform-es3-member-expression-literals', 'transform-es3-property-literals'],
-          presets: ['react', 'es2015'],
+        use: {
+          loader: 'babel-loader',
+          query: {
+            plugins: ['transform-es3-member-expression-literals', 'transform-es3-property-literals'],
+            presets: ['react', 'es2015'],
+          }
         }
       },
     ],
