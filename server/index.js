@@ -2,7 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import router from './api/react'
 import ideas from './api/ideas'
-import { port } from './server.config'
+import serverConfig from './server.config'
 
 // Initialize the Express App
 const app = express()
@@ -26,6 +26,7 @@ app.use('/ideas', ideas)
 app.use('/', router)
 
 // start app
-app.listen(port)
+app.listen(serverConfig.port)
+console.log(new Date(), 'listening on ', serverConfig.port)
 
 export default app

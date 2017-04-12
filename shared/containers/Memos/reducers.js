@@ -1,7 +1,7 @@
 import * as types from './constants'
 import { REHYDRATE } from 'redux-persist/constants'
 
-const memos = (state, action) => {
+const memos = (state = [], action) => {
   switch (action.type) {
     case REHYDRATE: {
       const incoming = action.payload.app

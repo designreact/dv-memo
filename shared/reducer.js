@@ -1,8 +1,12 @@
 import { combineReducers } from 'redux'
-import ideas from './containers/Memos/reducers'
+import { routerStateReducer as router } from 'redux-router'
+import { routerReducer } from 'react-router-redux'
+import memos from './containers/Memos/reducers'
 
 const rootReducer = combineReducers({
-  ideas,
+  memos,
+  router,
+  routing: routerReducer,
 })
 
 export default rootReducer

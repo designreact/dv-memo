@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Memos from '../../containers/Memos'
 
 const App = ({ children }) => {
   return (
@@ -11,7 +10,7 @@ const App = ({ children }) => {
 }
 
 App.propTypes = {
-  children: PropTypes.instanceOf(Memos).isRequired,
+  children: PropTypes.element.isRequired,
 }
 
 export default App

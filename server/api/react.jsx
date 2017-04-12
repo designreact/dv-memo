@@ -5,14 +5,14 @@ import { renderToString } from 'react-dom/server'
 import { createMemoryHistory, match, RouterContext } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { configureStore } from '../../shared/store/configureStore'
-import { apiServer } from '../server.config'
+// import serverConfig from '../server.config'
 import routes from '../../shared/routes'
 
 const router = express()
 
 const initialState = {
   memos: [],
-  apiServer,
+  // apiServer: serverConfig.apiServer,
 }
 
 function renderPage(html, state) {
@@ -71,10 +71,6 @@ router.get('/', (req, res) => {
     } else if (renderProps) {
       resolveRequest(req, res, store, renderProps)
     }
-  })
-  .catch((err) => {
-    console.log(new Date(), err, err.stack)
-    res.status(500).end(renderError(err))
   })
 })
 
