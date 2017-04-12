@@ -43,7 +43,7 @@ module.exports = {
       },
       {
         test: /\.(js|jsx)$/,
-        exclude: [/node_modules/, /.+\.config.js/, /tests/],
+        exclude: [/node_modules/, /.+\.config.js/, /.+\.spec.js/],
         loader: 'babel-loader',
         query: {
           plugins: ['transform-es3-member-expression-literals', 'transform-es3-property-literals'],

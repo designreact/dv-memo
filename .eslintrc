@@ -6,6 +6,9 @@
     "node": true,
     "mocha": true
    },
+   "globals": {
+     "expect": false
+   },
    "ecmaFeatures": {
     "jsx": true,
     "es6": true,

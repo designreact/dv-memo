@@ -37,7 +37,8 @@ module.exports = {
         warnings: false,
       },
     }),
-    new ExtractTextPlugin('style/app.css', {
+    new ExtractTextPlugin({
+      filename: 'style/app.css',
       allChunks: true,
     })
   ],
@@ -55,7 +56,7 @@ module.exports = {
       },
       {
         test: /\.(js|jsx)$/,
-        exclude: [/node_modules/, /.+\.config.js/, /tests/],
+        exclude: [/node_modules/, /.+\.config.js/, /.+\.spec.js/],
         use: 'babel-loader',
         query: {
           plugins: ['transform-runtime', 'transform-es3-member-expression-literals', 'transform-es3-property-literals'],
