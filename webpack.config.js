@@ -3,44 +3,23 @@ var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
+  cache: true,
+  context: process.cwd(),
   devtool: 'source-map',
-
+  resolve: {
+    modules: [
+      __dirname + '/node_modules',
+    ],
+    extensions: ['.js', '.jsx', '.scss'],
+  },
   entry: [
     'babel-polyfill',
-    __dirname + '/client/index.js'
+    __dirname + '/client/index.jsx'
   ],
-
   output: {
     path: __dirname + '/static/',
     filename: 'bundle.js',
   },
-
-  resolve: {
-    extensions: ['', '.js', '.jsx', '.scss'],
-  },
-
-  module: {
-    loaders: [
-      {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style', 'css?minimize&-autoprefixer!sass')
-      },
-      {
-        test: /\.js*$/,
-        loader: 'babel-loader',
-        exclude: [/node_modules/, /.+\.config.js/, /tests/],
-        query: {
-          plugins: ['transform-runtime', 'transform-es3-member-expression-literals', 'transform-es3-property-literals'],
-          presets: ['es2015', 'stage-0', 'react']
-        }
-      },
-    ],
-  },
-
-  sassLoader: {
-    outputStyle: 'compressed'
-  },
-
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
@@ -62,4 +41,27 @@ module.exports = {
       allChunks: true,
     })
   ],
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader'],
+        }),
+        options: {
+          outputStyle: 'compressed',
+        }
+      },
+      {
+        test: /\.(js|jsx)$/,
+        exclude: [/node_modules/, /.+\.config.js/, /tests/],
+        use: 'babel-loader',
+        query: {
+          plugins: ['transform-runtime', 'transform-es3-member-expression-literals', 'transform-es3-property-literals'],
+          presets: ['react', 'es2015'],
+        }
+      },
+    ],
+  },
 }

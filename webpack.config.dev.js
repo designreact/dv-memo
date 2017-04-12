@@ -1,49 +1,25 @@
 var webpack = require('webpack')
 
 module.exports = {
+  cache: true,
+  context: process.cwd(),
   devtool: 'cheap-module-eval-source-map',
-
+  resolve: {
+    modules: [
+      __dirname + '/node_modules',
+    ],
+    extensions: ['.js', '.jsx', '.scss'],
+  },
   entry: [
     'babel-polyfill',
     'webpack-hot-middleware/client',
-    './client/index.js',
+    __dirname + '/client/index.jsx',
   ],
-
   output: {
-    path: __dirname + '/static/',
+    path: __dirname + '/dist/',
     filename: 'bundle.js',
-    publicPath: '/static/',
+    publicPath: '/dist/',
   },
-
-  resolve: {
-    extensions: ['', '.js', '.jsx', '.scss'],
-  },
-
-  module: {
-    loaders: [
-      {
-        test: /\.js*$/,
-        exclude: [/node_modules/, /.+\.config.js/, /tests/],
-        loader: 'babel',
-        query: {
-          plugins: ['transform-es3-member-expression-literals', 'transform-es3-property-literals'],
-          presets: ['es2015', 'react', 'react-hmre'],
-        },
-      },
-      {
-        test: /\.scss$/,
-        loaders: ['style', 'css', 'sass']
-      }
-    ],
-    noParse: [
-      /aws\-sdk/,
-    ]
-  },
-
-  sassLoader: {
-    outputStyle: 'compressed'
-  },
-
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
@@ -52,4 +28,21 @@ module.exports = {
       }
     }),
   ],
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: [/node_modules/, /.+\.config.js/, /tests/],
+        loader: 'babel-loader',
+        query: {
+          plugins: ['transform-es3-member-expression-literals', 'transform-es3-property-literals'],
+          presets: ['react', 'react-hmre', 'es2015'],
+        },
+      },
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
+      }
+    ],
+  },
 }
