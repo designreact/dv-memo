@@ -4,22 +4,24 @@
   "env": {
     "browser": true,
     "node": true,
-    "mocha": true,
+    "mocha": true
    },
    "ecmaFeatures": {
     "jsx": true,
     "es6": true,
-    "classes": true,
+    "classes": true
    },
    "rules": {
-     "strict": [2, "global"],
-     "comma-dangle": [1, "always-multiline"],
-     "max-len": [1, 180, 4],
      "arrow-body-style": [0],
      "arrow-parens": [0],
-     "semi": [2, "never"],
+     "comma-dangle": [1, "always-multiline"],
      "global-require": [0],
+     "import/no-named-as-default": [0],
+     "max-len": [1, 180, 4],
+     "no-console": [0],
      "react/prefer-stateless-function": [0],
-    "import/first": [0]
-   },
+     "semi": [2, "never"],
+     "strict": [2, "global"],
+     "import/first": [0]
+   }
 }
