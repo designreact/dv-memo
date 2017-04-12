@@ -16,6 +16,7 @@ const initialState = {
 }
 
 function renderPage(html, state) {
+  const bundle = process.env.NODE_ENV === 'production' ? '<script defer src="/static/bundle.js"></script>' : ''
   return `
     <!doctype html>
     <html>
@@ -27,7 +28,7 @@ function renderPage(html, state) {
       <script>
         window.__INITIAL_STATE__ = ${JSON.stringify(state)}
       </script>
-      <script defer src="/static/bundle.js"></script>
+      ${bundle}
     </html>
   `
 }
