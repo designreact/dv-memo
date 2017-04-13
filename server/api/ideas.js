@@ -4,7 +4,8 @@ import bodyParser from 'body-parser'
 const ideas = express()
 ideas.use(bodyParser.json())
 
-const memos = [
+// mock database
+let memos = [
   {
     id: 0,
     created_date: 'Tue Apr 11 2017 20:30:00 GMT+0100 (BST)',
@@ -37,8 +38,8 @@ const memos = [
   },
 ]
 
+// ids are unique constants so not just length
 let currentId = memos.length
-
 function newId() {
   currentId += 1
   return currentId
@@ -49,35 +50,50 @@ ideas.get('/', (req, res) => {
 })
 
 ideas.get('/new', (req, res) => {
+  const memorandums = memos.slice(0)
   const memo = {
     id: newId(),
     created_date: new Date(),
+    title: 'Title',
+    body: 'Body',
+    isNew: true,
   }
-  memos.push(memo)
+  // return new idea
   res.status(200).send(memo)
+  // clear isNew property ahead of storing
+  delete memo.isNew
+  memorandums.push(memo)
+  // update mock database
+  memos = memorandums
 })
 
 ideas.post('/update', (req, res) => {
+  const memorandums = memos.slice(0)
   const { id, title, body } = req.body
   // update memo with matching id
-  const idea = memos.find((memo) => {
+  const idea = memorandums.find(memo => {
     return memo.id === id
   })
   idea.title = title
   idea.body = body
   // return updated ideas
-  res.status(200).send(memos)
+  res.status(200).send(memorandums)
+  // update mock database
+  memos = memorandums
 })
 
 ideas.post('/delete', (req, res) => {
+  const memorandums = memos.slice(0)
   // delete memo with id
   const deleteId = req.body.id
-  const index = ideas.findIndex(({ id }) => {
+  const index = memorandums.findIndex(({ id }) => {
     return id === deleteId
   })
-  ideas.splice(index, 1)
+  memorandums.splice(index, 1)
   // return updated ideas
-  res.status(200).send(memos)
+  res.status(200).send(memorandums)
+  // update mock database
+  memos = memorandums
 })
 
 export default ideas

@@ -3,24 +3,35 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { renderToString } from 'react-dom/server'
 import { createMemoryHistory, match, RouterContext } from 'react-router'
+// TODO upgrade react-router use StaticRouter
 import { syncHistoryWithStore } from 'react-router-redux'
 import { configureStore } from '../../shared/store/configureStore'
-// import serverConfig from '../server.config'
+import serverConfig from '../server.config'
 import routes from '../../shared/routes'
 
 const router = express()
 
 const initialState = {
   memos: [],
-  // apiServer: serverConfig.apiServer,
+  app: {
+    apiServer: serverConfig.apiServer,
+  },
+  sort: 'default',
 }
 
 function renderPage(html, state) {
-  const bundle = process.env.NODE_ENV === 'production' ? '<script defer src="/static/bundle.js"></script>' : ''
+  let stylesheet = ''
+  if (process.env.NODE_ENV === 'production') {
+    stylesheet = '<link href="/static/style/app.css" rel="stylesheet" type="text/css"/>'
+  }
   return `
     <!doctype html>
     <html>
       <head>
+        <meta name="robots" content="noindex" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        ${stylesheet}
+
       </head>
       <body>
         <div id="root">${html}</div>
@@ -28,7 +39,7 @@ function renderPage(html, state) {
       <script>
         window.__INITIAL_STATE__ = ${JSON.stringify(state)}
       </script>
-      ${bundle}
+      <script defer src="/static/bundle.js"></script>
     </html>
   `
 }

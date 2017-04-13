@@ -1,7 +1,7 @@
 import { Route, IndexRoute } from 'react-router'
 import React from 'react'
 
-import App from './components/App'
+import App from './containers/App'
 import Memos from './containers/Memos'
 
 const routes = (

@@ -3,7 +3,6 @@ import thunk from 'redux-thunk'
 import { REHYDRATE } from 'redux-persist/constants'
 import createActionBuffer from 'redux-action-buffer'
 import { persistStore, autoRehydrate } from 'redux-persist'
-import { asyncSessionStorage } from 'redux-persist/storages'
 import rootReducer from '../reducer'
 
 let store
@@ -26,8 +25,7 @@ export function configureStore(history, initialState = {}) {
   }
   store = createStore(rootReducer, initialState, enhancer)
   if (typeof window !== 'undefined') {
-    persistStore(store, { whitelist: ['app', 'basket'] })
-    persistStore(store, { storage: asyncSessionStorage, whitelist: ['session'] })
+    persistStore(store, { whitelist: ['memos'] })
   }
   return store
 }
