@@ -1,9 +1,31 @@
+@import '../../../scss/core/variables';
+@import '../../../scss/layouts/flexbox';
+
 .memos {
-
+  position: relative;
+  width: 100%;
+  height: 100vh;
 }
+
 .memos-header {
-
+  position: relative;
+  width: 100%;
+  height: 2.75rem;
+  background: $header-background;
 }
-.memos-items {
 
+.memos-items {
+  @include flexbox;
+  @include flex-wrap(wrap);
+  margin: 0.3125rem;
+}
+
+.memos-add {
+  @include itemSize();
+  background: $button-background;
+  border-radius: .25rem;
+  cursor: pointer;
+  &:hover {
+    background: $button-hover-background;
+  }
 }

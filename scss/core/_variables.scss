@@ -1,0 +1,16 @@
+$background: #F4F4F4;
+$header-background: #7ED4AE;
+$memo-background: #A0DEC2;
+$input-border: #CCCCCC;
+$button-background: #CCCCCC;
+$delete-background: #FA9392;
+$delete-colour: #FFFFFF;
+$button-hover-background: #7ED4AE;
+
+@mixin itemSize() {
+  min-width: 9.375rem;
+  max-width: 9.375rem;
+  min-height: 9.375rem;
+  max-height: 9.375rem;
+  margin: 0.3125rem;
+}
