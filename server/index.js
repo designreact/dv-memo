@@ -8,7 +8,7 @@ import serverConfig from './server.config'
 const app = express()
 app.use(bodyParser.json())
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'production') {
   // Webpack Requirements
   /* eslint global-require: "off" */
   /* eslint import/no-extraneous-dependencies: "off" */

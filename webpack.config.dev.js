@@ -3,7 +3,7 @@ var webpack = require('webpack')
 module.exports = {
   cache: true,
   context: process.cwd(),
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'source-map',
   resolve: {
     modules: [
       __dirname + '/node_modules',
@@ -16,12 +16,13 @@ module.exports = {
     __dirname + '/client/index.jsx',
   ],
   output: {
-    path: __dirname + '/dist/',
+    path: '/',
+    publicPath: '/static/',
     filename: 'bundle.js',
-    publicPath: '/dist/',
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         CLIENT: JSON.stringify(true)
@@ -43,16 +44,34 @@ module.exports = {
       },
       {
         test: /\.(js|jsx)$/,
-        exclude: [/node_modules/, /.+\.config.js/, /.+\.spec.js/],
-        loader: 'babel-loader',
-        query: {
-          plugins: ['transform-es3-member-expression-literals', 'transform-es3-property-literals'],
-          presets: ['react', 'react-hmre', 'es2015'],
-        },
+        exclude: [/node_modules/, /.\.config.js/, /.\.spec.js/],
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['react', 'react-hmre', 'es2015'],
+            plugins: [["react-transform", {
+              transforms: [{
+                transform: 'react-transform-hmr',
+                imports: ['react'],
+                locals: ['module']
+              }]
+            }]]
+          },
+        }
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+          },
+          {
+            loader: 'sass-loader',
+          }
+        ]
       }
     ],
   },
