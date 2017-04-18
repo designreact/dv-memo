@@ -1,30 +1,12 @@
-import * as types from './constants'
-import fetch from 'isomorphic-fetch'
-
-function postMemoData(uri, body) {
-  return new Promise((resolve, reject) => {
-    fetch(uri, {
-      credentials: 'same-origin',
-      body,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-    })
-    .then((response) => {
-      return response.json()
-    })
-    .then(resolve)
-    .catch(reject)
-  })
-}
+import types from './constants'
+import 'isomorphic-fetch'
 
 export function fetchMemos(apiServer) {
   return dispatch => {
     fetch(`${apiServer}/ideas`)
-    .then((response) => {
-      return response.json()
+    .then(response => {
+      if (response.status < 400) return response.json()
+      throw new Error('Server error')
     })
     .then(memos => {
       dispatch({ type: types.MEMO_FETCH, memos })
@@ -37,7 +19,19 @@ export function fetchMemos(apiServer) {
 
 export function updateMemo(apiServer, memo) {
   return dispatch => {
-    postMemoData(`${apiServer}/ideas/update`, memo)
+    fetch(`${apiServer}/ideas/update`, {
+      credentials: 'same-origin',
+      body: JSON.stringify(memo),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+    })
+    .then(response => {
+      if (response.status < 400) return response.json()
+      throw new Error('Server error')
+    })
     .then(memos => {
       dispatch({ type: types.MEMO_UPDATE, memos })
     })
@@ -50,8 +44,9 @@ export function updateMemo(apiServer, memo) {
 export function createMemo(apiServer) {
   return dispatch => {
     fetch(`${apiServer}/ideas/new`)
-    .then((response) => {
-      return response.json()
+    .then(response => {
+      if (response.status < 400) return response.json()
+      throw new Error('Server error')
     })
     .then(memo => {
       dispatch({ type: types.MEMO_CREATE, memo })
@@ -64,7 +59,19 @@ export function createMemo(apiServer) {
 
 export function deleteMemo(apiServer, memo) {
   return dispatch => {
-    postMemoData(`${apiServer}/ideas/delete`, memo)
+    fetch(`${apiServer}/ideas/delete`, {
+      credentials: 'same-origin',
+      body: JSON.stringify(memo),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+    })
+    .then(response => {
+      if (response.status < 400) return response.json()
+      throw new Error('Server error')
+    })
     .then(memos => {
       dispatch({ type: types.MEMO_DELETE, memos })
     })
