@@ -1,4 +1,3 @@
-import sinon from 'sinon'
 import types from '../constants'
 import reducers from '../reducers'
 import { REHYDRATE } from 'redux-persist/constants'

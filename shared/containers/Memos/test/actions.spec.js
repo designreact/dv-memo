@@ -2,7 +2,6 @@
 /* eslint import/no-extraneous-dependencies:0 */
 /* eslint import/no-webpack-loader-syntax:0 */
 /* eslint import/no-unresolved:0 */
-import sinon from 'sinon'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
