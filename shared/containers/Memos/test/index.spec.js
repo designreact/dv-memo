@@ -123,13 +123,13 @@ describe('Given <Memos />', () => {
       expect(output).to.have.className('memos')
     })
     it('Should render div.memos-header', () => {
-      expect(output).to.have.descendants('div.memos-header')
+      expect(output).to.have.exactly(1).descendants('div.memos-header')
     })
     it('Should render div.memos-items', () => {
-      expect(output).to.have.descendants('div.memos-items')
+      expect(output).to.have.exactly(1).descendants('div.memos-items')
     })
     it('Should render button.memos-add', () => {
-      expect(output).to.have.descendants('button.memos-add')
+      expect(output).to.have.exactly(1).descendants('button.memos-add')
     })
     it('Should render a Sort component', () => {
       expect(output).to.have.exactly(1).descendants(Sort)
@@ -139,7 +139,7 @@ describe('Given <Memos />', () => {
     })
     describe('Given the .memos-add button onClick method', () => {
       xit('Should call this.props.actions.createMemo', () => {
-        // TODO utilise enzyme mount to test onClick
+        // TODO utilise enzyme mount to test onClick - need to find solution to Sort store
         expect(props.actions.createMemo.calledOnce).to.be.true
       })
     })
