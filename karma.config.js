@@ -31,6 +31,14 @@ module.exports = function (config) {
     use: 'babel-loader',
   }]
 
+  // clear react/addons etc errors
+  // https://github.com/airbnb/enzyme/issues/503
+  webpackConfig.externals = {
+    'react/lib/ExecutionEnvironment': true,
+    'react/addons': true,
+    'react/lib/ReactContext': 'window',
+  }
+
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '.',
