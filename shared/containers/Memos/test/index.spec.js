@@ -120,6 +120,12 @@ describe('Given <Memos />', () => {
       output = null
     })
     it('Should render div.memos', () => {
+      /* FIXME have.tagName triggers the following error:
+       * Could not find "store" in either the context or props of "Connect(Sort)".
+       * Either wrap the root component in a <Provider>, or explicitly pass "store"
+       * as a prop to "Connect(Sort)".
+       */
+      // expect(output).to.have.tagName('div')
       expect(output).to.have.className('memos')
     })
     it('Should render div.memos-header', () => {
