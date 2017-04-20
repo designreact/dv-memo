@@ -7,7 +7,7 @@
     "test": "karma start karma.config.js --no-single-run",
     "dev": "node_modules/.bin/cross-env NODE_ENV=development babel-node index",
     "build": "webpack",
-    "start": "node index",
+    "start": "node_modules/.bin/cross-env NODE_ENV=production node index",
     "slate": "rimraf node_modules && yarn install"
   },
   "repository": {

@@ -31,7 +31,6 @@ function renderPage(html, state) {
         <meta name="robots" content="noindex" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         ${stylesheet}
-
       </head>
       <body>
         <div id="root">${html}</div>

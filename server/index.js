@@ -22,11 +22,12 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(webpackHotMiddleware(compiler))
 }
 
+app.use('/static', express.static('static'))
 app.use('/ideas', ideas)
 app.use('/', router)
 
 // start app
 app.listen(serverConfig.port)
-console.log(new Date(), 'listening on ', serverConfig.port)
+console.log(new Date(), 'listening on', serverConfig.port)
 
 export default app
