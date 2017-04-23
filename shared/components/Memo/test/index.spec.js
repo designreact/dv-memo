@@ -51,4 +51,44 @@ describe('Given <Memo />', () => {
     output.find('button.memo-delete').simulate('click')
     expect(props.onDelete.calledOnce).to.be.true
   })
+
+  describe('Given the Memo methods', () => {
+    let sandbox
+    let memoInstance
+    beforeEach(() => {
+      sandbox = sinon.sandbox.create()
+      memoInstance = new Memo()
+      memoInstance.props = props
+    })
+    afterEach(() => {
+      memoInstance = null
+      sandbox.restore()
+    })
+    describe('Given the getMemo method', () => {
+      it('Should return a memo created from the props', () => {
+        const memo = {
+          id: props.id,
+          title: props.title,
+          body: props.body,
+        }
+        expect(JSON.stringify(memoInstance.getMemo())).to.equal(JSON.stringify(memo))
+      })
+    })
+    describe('Given the updateMemo method', () => {
+      it('Should call props.onUpdate with the expected title', () => {
+        memoInstance.updateMemo('memo-title', 'expected test title')
+        expect(props.onUpdate.firstCall.args[0].title).to.equal('expected test title')
+      })
+      it('Should call props.onUpdate with the expected body', () => {
+        memoInstance.updateMemo('memo-body', 'expected test body')
+        expect(props.onUpdate.firstCall.args[0].body).to.equal('expected test body')
+      })
+    })
+    describe('Given the deleteMemo method', () => {
+      it('Should call props.onDelete', () => {
+        memoInstance.deleteMemo()
+        expect(props.onDelete.calledOnce).to.be.true
+      })
+    })
+  })
 })
