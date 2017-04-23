@@ -7,6 +7,7 @@ import chai, { expect } from 'chai'
 import chaiEnzyme from 'chai-enzyme'
 import Memo from '../index'
 import DynamicField from '../../DynamicField'
+import Count from '../../Count'
 
 chai.use(chaiEnzyme())
 
@@ -52,6 +53,13 @@ describe('Given <Memo />', () => {
     expect(props.onDelete.calledOnce).to.be.true
   })
 
+  describe('Given state.bodyLength !== null', () => {
+    it('Should render <Count />', () => {
+      output.setState({ bodyLength: 5 })
+      expect(output).to.have.exactly(1).descendants(Count)
+    })
+  })
+
   describe('Given the Memo methods', () => {
     let sandbox
     let memoInstance
@@ -59,10 +67,24 @@ describe('Given <Memo />', () => {
       sandbox = sinon.sandbox.create()
       memoInstance = new Memo()
       memoInstance.props = props
+      memoInstance.setState = sandbox.spy()
     })
     afterEach(() => {
       memoInstance = null
       sandbox.restore()
+    })
+    describe('Given the constructor method', () => {
+      it('Should assign updateMemo to boundUpdateMemo', () => {
+        expect(memoInstance.boundUpdateMemo).to.not.be.undefined
+        expect(memoInstance.boundUpdateMemo.name).to.equal(memoInstance.updateMemo.name)
+      })
+      it('Should assign deleteMemo to boundDeleteMemo', () => {
+        expect(memoInstance.boundDeleteMemo).to.not.be.undefined
+        expect(memoInstance.boundDeleteMemo.name).to.equal(memoInstance.deleteMemo.name)
+      })
+      it('Should set the default state to { bodyLength: null }', () => {
+        expect(memoInstance.state.bodyLength).to.be.null
+      })
     })
     describe('Given the getMemo method', () => {
       it('Should return a memo created from the props', () => {
@@ -82,6 +104,10 @@ describe('Given <Memo />', () => {
       it('Should call props.onUpdate with the expected body', () => {
         memoInstance.updateMemo('memo-body', 'expected test body')
         expect(props.onUpdate.firstCall.args[0].body).to.equal('expected test body')
+      })
+      it('Should clear bodyLength from state', () => {
+        memoInstance.updateMemo('memo-title', '')
+        expect(memoInstance.setState.calledWith({ bodyLength: null })).to.be.true
       })
     })
     describe('Given the deleteMemo method', () => {

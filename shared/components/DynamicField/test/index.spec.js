@@ -52,11 +52,13 @@ describe('Given <DynamicField />', () => {
     let props
     beforeEach(() => {
       props = {
-        TagName: 'h4',
-        FieldTagName: 'input',
-        className: 'memo-title',
-        value: 'A title here',
+        TagName: 'p',
+        FieldTagName: 'textarea',
+        className: 'memo-body',
+        value: 'Some body copy here',
         onUpdateValue: sandbox.spy(),
+        onUpdateLength: sandbox.spy(),
+        maxBodyLength: 140,
       }
       output = mount(<DynamicField {...props} />)
     })
@@ -64,13 +66,33 @@ describe('Given <DynamicField />', () => {
       output = null
     })
     it('Should render the given TagName with the given className', () => {
-      expect(output).to.have.className('memo-title')
-      expect(output).to.have.tagName('h4')
+      expect(output).to.have.className('memo-body')
+      expect(output).to.have.tagName('p')
     })
     describe('Given the field state is !blurred', () => {
-      it("Should have an 'input' tagName", () => {
+      it("Should have an 'textarea' tagName", () => {
         output.simulate('focus')
-        expect(output).to.have.tagName('input')
+        expect(output).to.have.tagName('textarea')
+      })
+    })
+    describe('Given the field is an input and is focussed', () => {
+      it('Should call onUpdateLength once', () => {
+        // need to focus to switch node before change
+        output.simulate('focus')
+        // now focus on input
+        output.simulate('focus')
+        expect(props.onUpdateLength.calledOnce).to.be.true
+      })
+      describe('Given the field.value is focussed then changed', () => {
+        it('Should call onUpdateLength twice', () => {
+          // need to focus to switch node before change
+          output.simulate('focus')
+          // now focus on input
+          output.simulate('focus')
+          // emit change
+          output.simulate('change')
+          expect(props.onUpdateLength.calledTwice).to.be.true
+        })
       })
     })
     describe('Given the field is an input and is then blurred', () => {
@@ -82,7 +104,7 @@ describe('Given <DynamicField />', () => {
       it('Should return to being of the given tagName', () => {
         output.simulate('focus')
         output.simulate('blur')
-        expect(output).to.have.tagName('h4')
+        expect(output).to.have.tagName('p')
       })
     })
   })

@@ -20,7 +20,7 @@ export class DynamicField extends Component {
   }
 
   render() {
-    const { TagName, FieldTagName, className, focus, value, onUpdateValue, maxBodyLength } = this.props
+    const { TagName, FieldTagName, className, focus, value, onUpdateValue, onUpdateLength, maxBodyLength } = this.props
     if (!this.state.blurred || focus) {
       return (
         <FieldTagName
@@ -37,6 +37,10 @@ export class DynamicField extends Component {
           }}
           onFocus={event => {
             event.target.select()
+            if (onUpdateLength) onUpdateLength(event.target.value.length)
+          }}
+          onChange={event => {
+            if (onUpdateLength) onUpdateLength(event.target.value.length)
           }}
         />
       )
@@ -67,6 +71,7 @@ DynamicField.propTypes = {
   maxBodyLength: PropTypes.number,
   value: PropTypes.string.isRequired,
   onUpdateValue: PropTypes.func.isRequired,
+  onUpdateLength: PropTypes.func,
 }
 
 DynamicField.defaultProps = {

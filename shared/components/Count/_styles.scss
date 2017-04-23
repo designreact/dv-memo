@@ -1,3 +1,11 @@
-.count {
+@import '../../../scss/core/variables';
 
+.count {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: .3rem .5rem;
+  color: $count-text-color;
+  background-color: rgba($background, 0.8);
+  pointer-events: none;
 }
