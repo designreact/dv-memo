@@ -3,7 +3,6 @@ import reducers from '../reducers'
 import { REHYDRATE } from 'redux-persist/constants'
 
 describe('Given the Memos reducers', () => {
-  let sandbox
   const item0 = { name: 'item0' }
   const item1 = { name: 'item1' }
   const item2 = { name: 'item2' }
@@ -11,12 +10,6 @@ describe('Given the Memos reducers', () => {
   const newItem = { name: 'newItem' }
   const state = [item0, item1, item2]
   const newMemos = [item1, item2, item3]
-  beforeEach(() => {
-    sandbox = sinon.sandbox.create()
-  })
-  afterEach(() => {
-    sandbox.restore()
-  })
   it('Should return the existing state', () => {
     const memos = reducers(state, { type: null })
     expect(memos).to.equal(state)

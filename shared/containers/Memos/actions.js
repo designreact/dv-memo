@@ -1,4 +1,6 @@
 import types from './constants'
+import notifierTypes from '../Notifier/constants'
+import { displayNotification } from '../Notifier/actions'
 import 'isomorphic-fetch'
 
 export function fetchMemos(apiServer) {
@@ -13,6 +15,7 @@ export function fetchMemos(apiServer) {
     })
     .catch(err => {
       dispatch({ type: types.MEMO_ERROR, err })
+      dispatch(displayNotification({ type: notifierTypes.NOTIFY_ERROR, message: 'An error occurred, memos not fetched' }))
     })
   }
 }
@@ -34,9 +37,11 @@ export function updateMemo(apiServer, memo) {
     })
     .then(memos => {
       dispatch({ type: types.MEMO_UPDATE, memos })
+      dispatch(displayNotification({ type: notifierTypes.NOTIFY_SAVED, message: 'Memo has been saved' }))
     })
     .catch(err => {
       dispatch({ type: types.MEMO_ERROR, err })
+      dispatch(displayNotification({ type: notifierTypes.NOTIFY_ERROR, message: 'An error occurred, memo may not have been saved' }))
     })
   }
 }
@@ -50,9 +55,11 @@ export function createMemo(apiServer) {
     })
     .then(memo => {
       dispatch({ type: types.MEMO_CREATE, memo })
+      dispatch(displayNotification({ type: notifierTypes.NOTIFY_SAVED, message: 'New memo created' }))
     })
     .catch(err => {
       dispatch({ type: types.MEMO_ERROR, err })
+      dispatch(displayNotification({ type: notifierTypes.NOTIFY_ERROR, message: 'An error occurred, memo not created' }))
     })
   }
 }
@@ -74,9 +81,11 @@ export function deleteMemo(apiServer, memo) {
     })
     .then(memos => {
       dispatch({ type: types.MEMO_DELETE, memos })
+      dispatch(displayNotification({ type: notifierTypes.NOTIFY_SAVED, message: 'Memo was deleted' }))
     })
     .catch(err => {
       dispatch({ type: types.MEMO_ERROR, err })
+      dispatch(displayNotification({ type: notifierTypes.NOTIFY_ERROR, message: 'An error occurred, memo not deleted' }))
     })
   }
 }

@@ -8,6 +8,10 @@ $delete-colour: #FFFFFF;
 $button-hover-background: #7ED4AE;
 $count-text-color: #FF0000;
 
+$notification-text-color: #FFFFFF;
+$notification-error-color: #AA0000;
+$notification-success-color: #00AA00;
+
 @mixin itemSize() {
   min-width: 9.375rem;
   max-width: 9.375rem;

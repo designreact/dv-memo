@@ -6,22 +6,18 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import fetchMock from 'fetch-mock'
 import types from '../constants'
+import notifierTypes from '../../Notifier/constants'
 import { fetchMemos, createMemo, updateMemo, deleteMemo } from '../actions'
 
 // updateMemo, deleteMemo
 describe('Given the Memos actions', () => {
-  let sandbox
   const path = 'test-path'
   const middlewares = [thunk]
   /* eslint max-len:0 */
   // 5 memos
   const memosJsonString = '[{"id":0,"created_date":"Tue Apr 11 2017 20:30:00 GMT+0100 (BST)","title":"Some awesome memo","body":"Chocolate cake wafer caramels cake fruitcake chupa chups. Topping sesame snaps lemon drops. Jelly beans sweet roll chupa chups gummies."},{"id":1,"created_date":"Tue Apr 11 2017 20:45:00 GMT+0100 (BST)","title":"Another awesome memo","body":"Topping sesame snaps lemon drops. Jelly beans sweet roll chupa chups gummies. Chocolate cake wafer caramels cake fruitcake chupa chups."},{"id":2,"created_date":"Tue Apr 11 2017 21:00:00 GMT+0100 (BST)","title":"Boring memo","body":"Jelly beans sweet roll chupa chups gummies. Chocolate cake wafer caramels cake fruitcake chupa chups. Topping sesame snaps lemon drops."},{"id":3,"created_date":"Tue Apr 11 2017 21:15:00 GMT+0100 (BST)","title":"Interesting memo","body":"Topping sesame snaps lemon drops. Chocolate cake wafer caramels cake fruitcake chupa chups."},{"id":4,"created_date":"Tue Apr 11 2017 21:30:00 GMT+0100 (BST)","title":"Exciting memo","body":"Topping sesame snaps lemon drops. Chocolate cake wafer caramels cake fruitcake chupa chups."}]'
-  beforeEach(() => {
-    sandbox = sinon.sandbox.create()
-  })
   afterEach(() => {
     fetchMock.restore()
-    sandbox.restore()
   })
   describe('Given the fetchMemos method', () => {
     describe('Given an unsuccessful response', () => {
@@ -31,6 +27,9 @@ describe('Given the Memos actions', () => {
       store.dispatch(fetchMemos(path))
       it('Should dispatch a MEMO_ERROR action', () => {
         expect(store.getActions()[0].type).to.equal(types.MEMO_ERROR)
+      })
+      it('Should dispatch a NOTIFY_ERROR action', () => {
+        expect(store.getActions()[1].type).to.equal(notifierTypes.NOTIFY_ERROR)
       })
     })
     describe('Given a successful response', () => {
@@ -60,13 +59,17 @@ describe('Given the Memos actions', () => {
       it('Should dispatch a MEMO_ERROR action', () => {
         expect(store.getActions()[0].type).to.equal(types.MEMO_ERROR)
       })
+      it('Should dispatch a NOTIFY_ERROR action', () => {
+        expect(store.getActions()[1].type).to.equal(notifierTypes.NOTIFY_ERROR)
+      })
     })
     describe('Given a successful response', () => {
-      it('Should dispatch a MEMO_UPDATE action', done => {
+      it('Should dispatch a MEMO_UPDATE and a NOTIFY_SAVED action', done => {
         const mockStore = configureMockStore(middlewares)
         const store = mockStore({ memos: [] })
         const expectedActions = [
           { type: types.MEMO_UPDATE, memos: JSON.parse(memosJsonString) },
+          { type: notifierTypes.NOTIFY_SAVED, message: 'Memo has been saved' },
         ]
         fetchMock.post(`${path}/ideas/update`, memosJsonString)
         store.dispatch(updateMemo(path, { id: 0 }))
@@ -89,10 +92,13 @@ describe('Given the Memos actions', () => {
         it('Should dispatch a MEMO_ERROR action', () => {
           expect(store.getActions()[0].type).to.equal(types.MEMO_ERROR)
         })
+        it('Should dispatch a NOTIFY_ERROR action', () => {
+          expect(store.getActions()[1].type).to.equal(notifierTypes.NOTIFY_ERROR)
+        })
       })
     })
     describe('Given a successful response', () => {
-      it('Should dispatch a MEMO_CREATE action', done => {
+      it('Should dispatch a MEMO_CREATE and a NOTIFY_SAVED action', done => {
         const mockStore = configureMockStore(middlewares)
         const newMemo = {
           id: 9,
@@ -104,6 +110,7 @@ describe('Given the Memos actions', () => {
         const store = mockStore({ memos: [] })
         const expectedActions = [
           { type: types.MEMO_CREATE, memo: newMemo },
+          { type: notifierTypes.NOTIFY_SAVED, message: 'New memo created' },
         ]
         fetchMock.get(`${path}/ideas/new`, JSON.stringify(newMemo))
         store.dispatch(createMemo(path))
@@ -128,27 +135,30 @@ describe('Given the Memos actions', () => {
         })
       })
     })
-    describe('Given a successful response', done => {
-      const mockStore = configureMockStore(middlewares)
-      const newMemo = {
-        id: 9,
-        created_date: 'Tue Apr 18 2017 15:37:25 GMT+0100 (BST)',
-        title: 'Title',
-        body: 'Body',
-        isNew: true,
-      }
-      const store = mockStore({ memos: [] })
-      const expectedActions = [
-        { type: types.MEMO_DELETE, memo: newMemo },
-      ]
-      fetchMock.post(`${path}/ideas/delete`, JSON.stringify(newMemo))
-      store.dispatch(deleteMemo(path))
-      // FIXME - dangerous use of timeout to ensure store actions are populated
-      // possibly due to latency in fetch mock? FYI tried sandox.useFakeTimers() already
-      setTimeout(() => {
-        expect(JSON.stringify(store.getActions())).to.equal(JSON.stringify(expectedActions))
-        done()
-      }, 0)
+    describe('Given a successful response', () => {
+      it('Should dispatch a MEMO_DELETE and a NOTIFY_SAVED action', done => {
+        const mockStore = configureMockStore(middlewares)
+        const memo = {
+          id: 0,
+          created_date: 'Tue Apr 18 2017 15:37:25 GMT+0100 (BST)',
+          title: 'Title',
+          body: 'Body',
+          isNew: true,
+        }
+        const store = mockStore({ memos: [] })
+        const expectedActions = [
+          { type: types.MEMO_DELETE, memos: JSON.parse(memosJsonString) },
+          { type: notifierTypes.NOTIFY_SAVED, message: 'Memo was deleted' },
+        ]
+        fetchMock.post(`${path}/ideas/delete`, memosJsonString)
+        store.dispatch(deleteMemo(path, memo))
+        // FIXME - dangerous use of timeout to ensure store actions are populated
+        // possibly due to latency in fetch mock? FYI tried sandox.useFakeTimers() already
+        setTimeout(() => {
+          expect(JSON.stringify(store.getActions())).to.equal(JSON.stringify(expectedActions))
+          done()
+        }, 0)
+      })
     })
   })
 })

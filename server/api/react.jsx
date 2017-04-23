@@ -12,10 +12,11 @@ import routes from '../../shared/routes'
 const router = express()
 
 const initialState = {
-  memos: [],
   app: {
     apiServer: serverConfig.apiServer,
   },
+  memos: [],
+  notifier: {},
   sort: 'default',
 }
 

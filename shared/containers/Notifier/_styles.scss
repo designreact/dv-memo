@@ -1,0 +1,23 @@
+@import '../../../scss/core/variables';
+
+.notifier {
+  position: relative;
+  z-index: 1000;
+}
+
+.notifier-message {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2.75rem;
+  line-height: 2.75rem;
+  text-align: center;
+  color: $notification-text-color;
+  &.saved {
+    background: $notification-success-color;
+  }
+  &.error {
+    background: $notification-error-color;
+  }
+}
