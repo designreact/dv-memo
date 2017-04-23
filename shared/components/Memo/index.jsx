@@ -22,8 +22,8 @@ const Memo = ({ id, title, body, isNew, onUpdate, onDelete }) => {
   }
   return (
     <div className="memo">
-      {<DynamicField TagName="h4" className="memo-title" value={title} focus={isNew} onUpdateValue={updateMemo} />}
-      {<DynamicField TagName="p" className="memo-body" value={body} onUpdateValue={updateMemo} />}
+      <DynamicField TagName="h4" FieldTagName="input" className="memo-title" value={title} onUpdateValue={updateMemo} focus={isNew} />
+      <DynamicField TagName="p" FieldTagName="textarea" className="memo-body" value={body} onUpdateValue={updateMemo} maxBodyLength={140} />
       <button className="memo-delete" onClick={deleteMemo}>Delete</button>
     </div>
   )

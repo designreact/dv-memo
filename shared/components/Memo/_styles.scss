@@ -7,9 +7,16 @@
   @include itemSize();
   background: $memo-background;
   border-radius: .25rem;
-  > input {
+  > input,
+  > textarea {
     border: 1px solid $input-border;
     outline: none;
+  }
+  > textarea.memo-body {
+    position: absolute;
+    top: 2rem;
+    left: 0;
+    height: 7.5rem;
   }
   &:hover > .memo-delete {
     visibility: visible;

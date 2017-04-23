@@ -53,6 +53,7 @@ describe('Given <DynamicField />', () => {
     beforeEach(() => {
       props = {
         TagName: 'h4',
+        FieldTagName: 'input',
         className: 'memo-title',
         value: 'A title here',
         onUpdateValue: sandbox.spy(),

@@ -20,10 +20,10 @@ export class DynamicField extends Component {
   }
 
   render() {
-    const { TagName, className, focus, value, onUpdateValue, maxBodyLength } = this.props
+    const { TagName, FieldTagName, className, focus, value, onUpdateValue, maxBodyLength } = this.props
     if (!this.state.blurred || focus) {
       return (
-        <input
+        <FieldTagName
           ref={c => { this.inputField = c }}
           className={className}
           type="text"
@@ -61,6 +61,7 @@ export class DynamicField extends Component {
 
 DynamicField.propTypes = {
   TagName: PropTypes.string.isRequired,
+  FieldTagName: PropTypes.string.isRequired,
   className: PropTypes.string.isRequired,
   focus: PropTypes.bool,
   maxBodyLength: PropTypes.number,
@@ -71,6 +72,7 @@ DynamicField.propTypes = {
 DynamicField.defaultProps = {
   focus: false,
   maxBodyLength: 20,
+  onUpdateLength: () => {},
 }
 
 export default DynamicField

@@ -44,7 +44,7 @@ describe('Given <Memo />', () => {
     // convert to input
     output.find('p.memo-body').simulate('focus')
     // fire blur event on input
-    output.find('input.memo-body').simulate('blur')
+    output.find('textarea.memo-body').simulate('blur')
     expect(props.onUpdate.calledTwice).to.be.true
   })
   it('Should call props.onDelete', () => {
