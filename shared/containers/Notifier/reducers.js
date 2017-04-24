@@ -4,7 +4,7 @@ const notifier = (state = {}, action) => {
   switch (action.type) {
     case types.NOTIFY_SAVED:
     case types.NOTIFY_ERROR:
-      return Object.create(action)
+      return Object.assign({}, action)
     case types.NOTIFY_CLEAR:
       return {}
     default:
